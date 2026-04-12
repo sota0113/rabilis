@@ -57,6 +57,10 @@
     transition: background .2s !important;
   }
   .nav-cta:hover { background: #2d8560 !important; color: white !important; }
+  .lang-switch { display: flex; gap: 6px; align-items: center; }
+  .lang-switch a { padding: 4px 10px; border-radius: 999px; border: 1.5px solid var(--border); color: var(--text-mid) !important; font-size: 0.72rem !important; font-weight: 700; text-decoration: none; transition: all .2s; }
+  .lang-switch a.active { background: var(--green-light); border-color: var(--green-mid); color: var(--green) !important; }
+  .lang-switch a:hover { border-color: var(--green); color: var(--green) !important; }
 
   /* HERO */
   .hero {
@@ -285,6 +289,10 @@
     <li><a href="#schedule">スケジュール</a></li>
     <li><a href="#join" class="nav-cta">参加する</a></li>
   </ul>
+  <div class="lang-switch">
+    <a href="index.html" class="active">JP</a>
+    <a href="index-en.html">EN</a>
+  </div>
 </nav>
 
 <section class="hero">

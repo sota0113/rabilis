@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RABILIS – Badminton Club Tokyo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fffdf7;
+    --soft-white: #f7f4ee;
+    --green: #3a9e72;
+    --green-light: #e6f5ee;
+    --green-mid: #c2e8d4;
+    --coral: #f07057;
+    --coral-light: #fdf0ec;
+    --yellow: #f9c846;
+    --yellow-light: #fef8e1;
+    --text: #2d2d2d;
+    --text-mid: #555;
+    --text-light: #888;
+    --border: rgba(0,0,0,0.07);
+    --shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 48px;
+    background: rgba(255,253,247,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem; font-weight: 800;
+    color: var(--green); letter-spacing: 0.04em;
+  }
+  .logo span { color: var(--text); }
+  nav ul { list-style: none; display: flex; gap: 32px; align-items: center; }
+  nav a { color: var(--text-mid); text-decoration: none; font-size: 0.82rem; font-weight: 600; transition: color .2s; }
+  nav a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: white !important;
+    padding: 8px 20px; border-radius: 999px; font-size: 0.78rem !important;
+  }
+  .nav-cta:hover { background: #2d8560 !important; }
+
+  .lang-switch {
+    display: flex; gap: 6px; align-items: center;
+    font-size: 0.75rem; font-weight: 700;
+  }
+  .lang-switch a {
+    padding: 4px 10px; border-radius: 999px;
+    border: 1.5px solid var(--border);
+    color: var(--text-mid) !important; font-size: 0.72rem !important;
+    transition: all .2s;
+  }
+  .lang-switch a.active {
+    background: var(--green-light); border-color: var(--green-mid); color: var(--green) !important;
+  }
+  .lang-switch a:hover { border-color: var(--green); color: var(--green) !important; }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 48px 60px;
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #fffdf7 55%, #e6f5ee 100%);
+  }
+  .hero-blob { position: absolute; border-radius: 50%; pointer-events: none; }
+  .blob1 { width: 480px; height: 480px; background: radial-gradient(circle, #c2e8d4 0%, transparent 70%); top: -80px; right: -60px; opacity: 0.7; }
+  .blob2 { width: 300px; height: 300px; background: radial-gradient(circle, #fef0e4 0%, transparent 70%); bottom: 40px; right: 200px; opacity: 0.8; }
+  .blob3 { width: 200px; height: 200px; background: radial-gradient(circle, #fef8e1 0%, transparent 70%); top: 200px; left: -40px; opacity: 0.9; }
+  .hero-inner { position: relative; max-width: 680px; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green-light); color: var(--green);
+    border-radius: 999px; padding: 6px 16px;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 800; line-height: 1.1; color: var(--text); margin-bottom: 20px;
+  }
+  .hero-title .green { color: var(--green); }
+  .hero-sub { font-size: 1rem; color: var(--text-mid); line-height: 1.9; max-width: 500px; margin-bottom: 36px; }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-green {
+    background: var(--green); color: white;
+    padding: 14px 32px; border-radius: 999px;
+    font-size: 0.88rem; font-weight: 700; text-decoration: none;
+    transition: all .2s; display: inline-block;
+    box-shadow: 0 4px 16px rgba(58,158,114,0.3);
+  }
+  .btn-green:hover { background: #2d8560; transform: translateY(-2px); }
+  .btn-ghost {
+    background: white; color: var(--text);
+    padding: 14px 32px; border-radius: 999px;
+    font-size: 0.88rem; font-weight: 700; text-decoration: none;
+    border: 1.5px solid var(--border); transition: all .2s; display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+  .marquee-wrap { overflow: hidden; background: var(--green); padding: 10px 0; }
+  .marquee-track { display: flex; animation: marquee 22s linear infinite; white-space: nowrap; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-track span { font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.15em; color: white; padding: 0 24px; opacity: 0.9; }
+  .marquee-track .dot { opacity: 0.4; }
+
+  section { padding: 80px 48px; }
+  .section-tag {
+    display: inline-block; background: var(--green-light); color: var(--green);
+    border-radius: 999px; padding: 4px 14px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800; line-height: 1.15; margin-bottom: 40px; color: var(--text);
+  }
+
+  .about-wrap { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .about-text p { color: var(--text-mid); line-height: 2; margin-bottom: 14px; font-size: 0.92rem; }
+  .about-text strong { color: var(--text); font-weight: 600; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-card { background: white; border-radius: 20px; padding: 24px 20px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+  .stat-card.green { background: var(--green-light); border-color: var(--green-mid); }
+  .stat-card.yellow { background: var(--yellow-light); border-color: #f3e09a; }
+  .stat-card.coral { background: var(--coral-light); border-color: #f5c9bf; }
+  .stat-num { font-family: 'Nunito', sans-serif; font-size: 2.4rem; font-weight: 800; color: var(--green); line-height: 1; }
+  .stat-card.yellow .stat-num { color: #c08a00; }
+  .stat-card.coral .stat-num { color: var(--coral); }
+  .stat-lbl { font-size: 0.72rem; color: var(--text-light); margin-top: 4px; }
+
+  .features-bg { background: var(--soft-white); }
+  .features-wrap { max-width: 1100px; margin: 0 auto; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .feat-card { background: white; border-radius: 20px; padding: 32px 24px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: transform .2s; }
+  .feat-card:hover { transform: translateY(-4px); }
+  .feat-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 18px; }
+  .icon-green { background: var(--green-light); }
+  .icon-yellow { background: var(--yellow-light); }
+  .icon-coral { background: var(--coral-light); }
+  .feat-title { font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; color: var(--text); }
+  .feat-desc { color: var(--text-mid); font-size: 0.84rem; line-height: 1.85; }
+
+  .schedule-wrap { max-width: 1100px; margin: 0 auto; }
+  .sched-list { display: flex; flex-direction: column; gap: 10px; }
+  .sched-row { background: white; border-radius: 14px; padding: 18px 24px; border: 1px solid var(--border); display: flex; align-items: center; gap: 24px; flex-wrap: wrap; transition: box-shadow .2s; }
+  .sched-row:hover { box-shadow: 0 4px 18px rgba(58,158,114,0.12); }
+  .sched-date { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem; color: var(--text); min-width: 150px; }
+  .sched-time { color: var(--text-mid); font-size: 0.85rem; }
+  .sched-place { color: var(--text-mid); font-size: 0.85rem; margin-left: auto; }
+  .sched-badge { background: var(--green-light); color: var(--green); border-radius: 999px; padding: 4px 14px; font-size: 0.72rem; font-weight: 700; }
+
+  .join-bg { background: linear-gradient(135deg, #e6f5ee 0%, #fffdf7 60%); }
+  .join-wrap { max-width: 680px; margin: 0 auto; text-align: center; }
+  .join-wrap .section-title { margin-bottom: 14px; }
+  .join-wrap > p { color: var(--text-mid); font-size: 0.9rem; line-height: 2; margin-bottom: 8px; }
+  .join-card { background: white; border-radius: 20px; padding: 32px; border: 1px solid var(--border); box-shadow: var(--shadow); text-align: left; margin: 32px 0; }
+  .join-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: baseline; flex-wrap: wrap; gap: 8px; }
+  .join-row:last-child { border-bottom: none; }
+  .join-label { font-size: 0.75rem; font-weight: 700; color: var(--text-light); letter-spacing: 0.1em; text-transform: uppercase; }
+  .join-val { font-size: 0.88rem; color: var(--text); }
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  footer { background: var(--text); color: rgba(255,255,255,0.7); padding: 40px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+  .footer-logo { font-family: 'Nunito', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--green); }
+  footer small { font-size: 0.75rem; }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { color: rgba(255,255,255,0.5); font-size: 0.75rem; text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: var(--green); }
+
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    nav ul { display: none; }
+    .hero { padding: 90px 20px 50px; }
+    section { padding: 60px 20px; }
+    .about-wrap { grid-template-columns: 1fr; gap: 36px; }
+    .features-grid { grid-template-columns: 1fr; }
+    footer { padding: 32px 20px; flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+  }
+
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp .6s forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  .d1 { animation-delay: .1s; } .d2 { animation-delay: .22s; }
+  .d3 { animation-delay: .34s; } .d4 { animation-delay: .46s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">RABI<span>LIS</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#join" class="nav-cta">Join Us</a></li>
+  </ul>
+  <div class="lang-switch">
+    <a href="index.html">JP</a>
+    <a href="index-en.html" class="active">EN</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-blob blob1"></div>
+  <div class="hero-blob blob2"></div>
+  <div class="hero-blob blob3"></div>
+  <div class="hero-inner">
+    <div class="hero-tag fade-in d1">🏸 Koto, Tokyo &nbsp;/&nbsp; Est. 2023</div>
+    <h1 class="hero-title fade-in d2">
+      Play together,<br>
+      <span class="green">grow together</span>
+    </h1>
+    <p class="hero-sub fade-in d3">
+      RABILIS is a friendly badminton club based in Koto, Tokyo.
+      No rigid hierarchy — just a welcoming community where beginners and advanced players improve side by side.
+    </p>
+    <div class="hero-cta fade-in d4">
+      <a href="#join" class="btn-green">Try a Session</a>
+      <a href="#about" class="btn-ghost">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>RABILIS</span><span class="dot">✦</span>
+    <span>Badminton Club</span><span class="dot">✦</span>
+    <span>Beginners Welcome</span><span class="dot">✦</span>
+    <span>Koto, Tokyo</span><span class="dot">✦</span>
+    <span>Fun &amp; Friendly</span><span class="dot">✦</span>
+    <span>50/50 Mixed</span><span class="dot">✦</span>
+    <span>Tournament Play</span><span class="dot">✦</span>
+    <span>RABILIS</span><span class="dot">✦</span>
+    <span>Badminton Club</span><span class="dot">✦</span>
+    <span>Beginners Welcome</span><span class="dot">✦</span>
+    <span>Koto, Tokyo</span><span class="dot">✦</span>
+    <span>Fun &amp; Friendly</span><span class="dot">✦</span>
+    <span>50/50 Mixed</span><span class="dot">✦</span>
+    <span>Tournament Play</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<section>
+  <div class="about-wrap" id="about">
+    <div class="about-text">
+      <div class="section-tag">About Us</div>
+      <h2 class="section-title">Fun, friendly,<br>and always improving.</h2>
+      <p>RABILIS was founded in 2023 and is based in the Koto area of Tokyo. We're a tight-knit badminton community that welcomes players of all levels.</p>
+      <p><strong>No seniority, no formality.</strong> Everyone uses first names and looks out for each other — new faces are actively welcomed from day one.</p>
+      <p>We're laid-back, but we're serious about getting better. Members range from complete beginners to players with inter-high school tournament experience, and we <strong>compete in monthly tournaments</strong> together.</p>
+      <p style="margin-top:24px;">
+        <a href="https://www.instagram.com/rabilis_badminton_tokyo" target="_blank" class="btn-ghost" style="font-size:0.8rem;padding:10px 22px;">📷 Follow on Instagram</a>
+      </p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card green">
+        <div class="stat-num">2023</div>
+        <div class="stat-lbl">Founded</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--green);">50/50</div>
+        <div class="stat-lbl">Male / Female</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-num">20s–50s</div>
+        <div class="stat-lbl">Age range</div>
+      </div>
+      <div class="stat-card coral">
+        <div class="stat-num">¥800~</div>
+        <div class="stat-lbl">Per session (shuttles incl.)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features-bg" id="features">
+  <div class="features-wrap">
+    <div class="section-tag">Features</div>
+    <h2 class="section-title">What makes RABILIS special</h2>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon icon-green">🏸</div>
+        <div class="feat-title">Beginner-friendly coaching</div>
+        <p class="feat-desc">Advanced members actively help beginners with fundamentals — something you won't find at most clubs. We have players with inter-high school experience on hand.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon icon-yellow">🤝</div>
+        <div class="feat-title">Welcoming atmosphere</div>
+        <p class="feat-desc">No hierarchy, no formality. Everyone goes by first names, and we make sure no one sits on the sidelines. First-timers fit in naturally.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon icon-coral">🏆</div>
+        <div class="feat-title">Competitive spirit</div>
+        <p class="feat-desc">We enter tournaments roughly once a month. Casual but ambitious — the perfect balance if you want to have fun and push yourself.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="schedule-wrap" id="schedule">
+    <div class="section-tag">Schedule</div>
+    <h2 class="section-title">Upcoming sessions</h2>
+    <div class="sched-list">
+      <div class="sched-row">
+        <div class="sched-date">Thu, Apr 24</div>
+        <div class="sched-time">🌙 Evening &nbsp;18:00–21:00</div>
+        <div class="sched-place">📍 Koto, Tokyo</div>
+        <span class="sched-badge">Open</span>
+      </div>
+      <div class="sched-row">
+        <div class="sched-date">Thu, May 1</div>
+        <div class="sched-time">🌙 Evening &nbsp;18:00–21:00</div>
+        <div class="sched-place">📍 Koto, Tokyo</div>
+        <span class="sched-badge">Open</span>
+      </div>
+      <div class="sched-row">
+        <div class="sched-date">Thu, May 8</div>
+        <div class="sched-time">🌙 Evening &nbsp;18:00–21:00</div>
+        <div class="sched-place">📍 Koto, Tokyo</div>
+        <span class="sched-badge">Open</span>
+      </div>
+      <div class="sched-row">
+        <div class="sched-date">Sat, May 10</div>
+        <div class="sched-time">🌙 Evening &nbsp;18:00–21:00</div>
+        <div class="sched-place">📍 Koto, Tokyo</div>
+        <span class="sched-badge">Open</span>
+      </div>
+      <div class="sched-row">
+        <div class="sched-date">Thu, May 22</div>
+        <div class="sched-time">🌙 Evening &nbsp;18:00–21:00</div>
+        <div class="sched-place">📍 Koto, Tokyo</div>
+        <span class="sched-badge">Open</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="join-bg" id="join">
+  <div class="join-wrap">
+    <div class="section-tag">Join Us</div>
+    <h2 class="section-title">Come try a session!</h2>
+    <p>Drop-ins and observers are welcome. Rackets available to borrow.</p>
+    <p>Send us a message with the following details 😊</p>
+    <div class="join-card">
+      <div class="join-row">
+        <span class="join-label">Name</span>
+        <span class="join-val">Full name or nickname is fine</span>
+      </div>
+      <div class="join-row">
+        <span class="join-label">Gender</span>
+        <span class="join-val">Any</span>
+      </div>
+      <div class="join-row">
+        <span class="join-label">Experience</span>
+        <span class="join-val">Complete beginners and returning players welcome</span>
+      </div>
+      <div class="join-row">
+        <span class="join-label">Preferred date</span>
+        <span class="join-val">Choose from the schedule above</span>
+      </div>
+      <div class="join-row">
+        <span class="join-label">Session fee</span>
+        <span class="join-val">¥800–900 (shuttlecocks included)</span>
+      </div>
+    </div>
+    <div class="cta-row">
+      <a href="https://www.net-menber.com/look/data/176712.html" target="_blank" class="btn-green">Apply via Listing</a>
+      <a href="https://www.instagram.com/rabilis_badminton_tokyo" target="_blank" class="btn-ghost">View Instagram</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">RABILIS</div>
+  <small>© 2023 RABILIS Badminton Club &nbsp;/&nbsp; Koto, Tokyo</small>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#features">Features</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#join">Join</a>
+    <a href="https://www.instagram.com/rabilis_badminton_tokyo" target="_blank">Instagram</a>
+  </div>
+</footer>
+
+</body>
+</html>
