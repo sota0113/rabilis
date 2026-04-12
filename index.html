@@ -407,6 +407,8 @@
 (function() {
   const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR1fXJhy-p9Qj86J-toFWKgIVcVSp0_fzCmWoNirX7nXqx1RnFS3KorGy9yfRn2-Lwd21TGr2fpxGIX/pub?gid=0&single=true&output=csv';
 
+  const WEEKDAYS_JA = ['日', '月', '火', '水', '木', '金', '土'];
+
   function parseCSV(text) {
     const lines = text.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
@@ -420,17 +422,33 @@
     }).filter(row => row.date);
   }
 
+  function formatDate(dateStr) {
+    const [y, m, d] = dateStr.split('/').map(Number);
+    const date = new Date(y, m - 1, d);
+    const wday = WEEKDAYS_JA[date.getDay()];
+    return `${m}月${d}日（${wday}）`;
+  }
+
+  function isPast(dateStr) {
+    const [y, m, d] = dateStr.split('/').map(Number);
+    const date = new Date(y, m - 1, d);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
+  }
+
   function renderSchedule(rows) {
     const list = document.getElementById('sched-list');
-    if (!rows.length) {
+    const upcoming = rows.filter(row => !isPast(row.date));
+    if (!upcoming.length) {
       list.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-light);font-size:0.88rem;">現在予定されている練習はありません</div>';
       return;
     }
-    list.innerHTML = rows.map(row => {
+    list.innerHTML = upcoming.map(row => {
       const badgeColor = row.status === '満員' ? 'background:#fdf0ec;color:#f07057;' : 'background:var(--green-light);color:var(--green);';
       return `
         <div class="sched-row">
-          <div class="sched-date">${row.date}</div>
+          <div class="sched-date">${formatDate(row.date)}</div>
           <div class="sched-time">🌙 ${row.time}</div>
           <div class="sched-place">📍 ${row.place}</div>
           <span class="sched-badge" style="${badgeColor}">${row.status}</span>
