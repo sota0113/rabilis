@@ -50,7 +50,7 @@ module.exports = async function handler(req, res) {
   }
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-  const { message, history } = body;
+  const { message, history, lang } = body;
   if (!message) {
     return res.status(400).json({ error: 'Message is required' });
   }
@@ -61,11 +61,37 @@ module.exports = async function handler(req, res) {
   }
 
   const schedule = await fetchSchedule();
-  const scheduleSection = schedule
-    ? `【直近の練習スケジュール】\n${schedule}`
-    : '【直近の練習スケジュール】\nスケジュールの取得に失敗しました。サイトのスケジュールセクションをご確認ください。';
 
-  const systemPrompt = `あなたはRABILIS（ラビリス）バドミントンクラブの公式アシスタントです。
+  let systemPrompt;
+  if (lang === 'en') {
+    const scheduleSection = schedule
+      ? `[Upcoming Practice Sessions]\n${schedule}`
+      : '[Upcoming Practice Sessions]\nCould not load schedule. Please check the Schedule section on the website.';
+    systemPrompt = `You are the official assistant for RABILIS, a badminton club in Tokyo.
+Answer visitors' questions in English, in a friendly and concise way.
+Keep your replies to 3 sentences or fewer.
+
+[Club Info]
+- Name: RABILIS
+- Founded: 2023
+- Location: Koto area, Tokyo
+- Session fee: ¥800–900 (shuttlecocks included)
+- Gender ratio: 50/50 male/female
+- Age range: 20s–50s
+- Atmosphere: No hierarchy, first names only, welcoming
+- Features: Beginner coaching by advanced players, inter-high school experienced members, monthly tournaments
+- Trial sessions: Drop-ins and observers welcome, rackets available to borrow
+- Apply via: Listing board (net-menber.com) or Instagram
+- Instagram: @rabilis_badminton_tokyo
+
+${scheduleSection}
+
+For questions you cannot answer, direct visitors to Instagram.`;
+  } else {
+    const scheduleSection = schedule
+      ? `【直近の練習スケジュール】\n${schedule}`
+      : '【直近の練習スケジュール】\nスケジュールの取得に失敗しました。サイトのスケジュールセクションをご確認ください。';
+    systemPrompt = `あなたはRABILIS（ラビリス）バドミントンクラブの公式アシスタントです。
 以下の情報をもとに、訪問者の質問に日本語で丁寧かつ親しみやすく答えてください。
 回答は必ず3文以内の短い文章にしてください。
 
@@ -85,6 +111,7 @@ module.exports = async function handler(req, res) {
 ${scheduleSection}
 
 答えられない質問はInstagramへ誘導してください。`;
+  }
 
   const contents = [
     ...(history || []),
