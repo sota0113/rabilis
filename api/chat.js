@@ -1,3 +1,49 @@
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR1fXJhy-p9Qj86J-toFWKgIVcVSp0_fzCmWoNirX7nXqx1RnFS3KorGy9yfRn2-Lwd21TGr2fpxGIX/pub?gid=0&single=true&output=csv';
+const WEEKDAYS_JA = ['日', '月', '火', '水', '木', '金', '土'];
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  return lines.slice(1).map(line => {
+    const vals = line.match(/(".*?"|[^,]+)(?=,|$)/g) || line.split(',');
+    const obj = {};
+    headers.forEach((h, i) => {
+      obj[h] = (vals[i] || '').trim().replace(/^"|"$/g, '');
+    });
+    return obj;
+  }).filter(row => row.date);
+}
+
+function formatDate(dateStr) {
+  const [y, m, d] = dateStr.split('/').map(Number);
+  const date = new Date(y, m - 1, d);
+  const wday = WEEKDAYS_JA[date.getDay()];
+  return `${y}年${m}月${d}日（${wday}）`;
+}
+
+function isPast(dateStr) {
+  const [y, m, d] = dateStr.split('/').map(Number);
+  const date = new Date(y, m - 1, d);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return date < today;
+}
+
+async function fetchSchedule() {
+  try {
+    const res = await fetch(CSV_URL);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    const upcoming = rows.filter(row => !isPast(row.date));
+    if (!upcoming.length) return '現在予定されている練習はありません。';
+    return upcoming.map(row =>
+      `- ${formatDate(row.date)} ${row.time} ／ ${row.place} ［${row.status}］`
+    ).join('\n');
+  } catch {
+    return null;
+  }
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -14,8 +60,14 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'API key not configured' });
   }
 
+  const schedule = await fetchSchedule();
+  const scheduleSection = schedule
+    ? `【直近の練習スケジュール】\n${schedule}`
+    : '【直近の練習スケジュール】\nスケジュールの取得に失敗しました。サイトのスケジュールセクションをご確認ください。';
+
   const systemPrompt = `あなたはRABILIS（ラビリス）バドミントンクラブの公式アシスタントです。
 以下の情報をもとに、訪問者の質問に日本語で丁寧かつ親しみやすく答えてください。
+回答は必ず3文以内の短い文章にしてください。
 
 【クラブ情報】
 - クラブ名：RABILIS（ラビリス）
@@ -30,7 +82,8 @@ module.exports = async function handler(req, res) {
 - 申し込み：掲示板（net-menber.com）またはInstagramから
 - Instagram：@rabilis_badminton_tokyo
 
-スケジュールの詳細や最新情報はサイトのスケジュールセクションを確認するよう案内してください。
+${scheduleSection}
+
 答えられない質問はInstagramへ誘導してください。`;
 
   const contents = [
