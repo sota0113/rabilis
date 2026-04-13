@@ -646,7 +646,7 @@
         addMessage(data.reply, 'bot');
         history = data.history;
       } else {
-        addMessage('エラーが発生しました。もう一度お試しください。', 'bot');
+        addMessage('エラー: ' + (data.detail || data.error || '不明なエラー'), 'bot');
       }
     } catch {
       typing.remove();
