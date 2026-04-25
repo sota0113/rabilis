@@ -79,7 +79,7 @@ Keep your replies to 3 sentences or fewer.
 - Gender ratio: 50/50 male/female
 - Age range: 20s–50s
 - Atmosphere: No hierarchy, first names only, welcoming
-- Features: Beginner coaching by advanced players, inter-high school experienced members, monthly tournaments
+- Features: Entry-level coaching by advanced players, inter-high school experienced members, monthly tournaments
 - Trial sessions: Drop-ins and observers welcome, rackets available to borrow
 - Apply via: Listing board (net-menber.com) or Instagram
 - Instagram: @rabilis_badminton_tokyo
@@ -103,7 +103,7 @@ For questions you cannot answer, direct visitors to Instagram.`;
 - 男女比：男女半々（50/50）
 - 年代：20〜50代
 - 雰囲気：上下関係なし、あだ名呼び合い、アットホーム
-- 特徴：初心者サポート体制あり、インターハイ出場経験者も在籍、月1程度の大会参加
+- 特徴：初級者サポート体制あり、インターハイ出場経験者も在籍、月1程度の大会参加
 - 体験参加：見学のみもOK、ラケット貸し出し可能
 - 申し込み：掲示板（net-menber.com）またはInstagramから
 - Instagram：@rabilis_badminton_tokyo
